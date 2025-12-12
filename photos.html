@@ -5,15 +5,135 @@
   <title>Memories ❤️</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Inline minimal gallery + lightbox CSS (keeps file self-contained) */
+    .title { text-align:center; margin:18px 0; font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 18px; max-width:1200px; margin: 0 auto; }
+    .gallery-item { position: relative; overflow: hidden; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); background:#fafafa; cursor:pointer; transition: transform .22s ease, box-shadow .22s ease; }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; aspect-ratio:4/5; display:block; transition: transform .35s ease, filter .35s ease; }
+    .gallery-item:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(0,0,0,0.12); }
+    .gallery-item:hover img { transform: scale(1.06); filter: saturate(1.06); }
+
+    /* caption overlay using data-caption */
+    .gallery-item::after {
+      content: attr(data-caption);
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.62) 100%);
+      color: #fff;
+      font-size: 14px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .22s ease, transform .22s ease;
+      pointer-events: none;
+    }
+    .gallery-item:hover::after { opacity: 1; transform: translateY(0); }
+
+    .letter-btn { display:block; width:max-content; margin:22px auto; padding:10px 16px; background:#ff6b81; color:#fff; text-decoration:none; border-radius:10px; box-shadow:0 6px 18px rgba(255,107,129,0.18); }
+
+    /* Lightbox */
+    .lb-backdrop { position:fixed; inset:0; background: rgba(0,0,0,0.78); display:none; align-items:center; justify-content:center; z-index:9999; padding:20px; }
+    .lb-backdrop.open { display:flex; }
+    .lb { width:100%; max-width:1100px; max-height:90vh; display:grid; grid-template-columns: 1fr 320px; gap:16px; align-items:start; }
+    .lb-image { background:#000; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .lb-image img { max-width:100%; max-height:90vh; object-fit:contain; display:block; }
+    .lb-meta { background:#fff; padding:14px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.08); color:#222; max-height:86vh; overflow:auto; }
+    .lb-controls { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+    .lb-btn { padding:8px 12px; border-radius:10px; background:#111; color:#fff; border:none; cursor:pointer; }
+    .lb-caption { font-size:15px; line-height:1.45; color:#222; margin-bottom:10px; }
+    .lb-counter { font-size:13px; color:#666; }
+    .lb-close { position:absolute; right:20px; top:18px; background:transparent; color:#fff; border:none; font-size:22px; cursor:pointer; }
+
+    .nav-arrow { position:fixed; top:50%; transform:translateY(-50%); font-size:36px; color:#fff; background:rgba(0,0,0,0.25); width:48px; height:48px; border-radius:50%; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10001; }
+    .nav-prev { left:18px; }
+    .nav-next { right:18px; }
+
+    @media (max-width:900px) { .lb { grid-template-columns: 1fr; } .lb-meta { order:2; max-height:30vh; } .lb-image { order:1; } }
+  </style>
 </head>
 <body>
 
   <h1 class="title">Your Memories ❤️</h1>
 
-  <!-- gallery will be built here -->
-  <div class="gallery" id="gallery" aria-live="polite"></div>
+  <div class="gallery" id="gallery" aria-live="polite">
+    <!-- 74 gallery-item blocks (each contains img + data-caption) -->
+    <div class="gallery-item" data-caption="The smile that made my heart choose you ❤️"><img src="img1.jpg" alt="The smile that made my heart choose you ❤️" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your eyes here… impossible to forget"><img src="img2.jpg" alt="Your eyes here… impossible to forget" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My pretty girl looking like magic"><img src="img3.jpg" alt="My pretty girl looking like magic" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This day, my heart fell a little deeper"><img src="img4.jpg" alt="This day, my heart fell a little deeper" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your laughter is my favorite sound"><img src="img5.jpg" alt="Your laughter is my favorite sound" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The moment I realized you’re too beautiful for words"><img src="img6.jpg" alt="The moment I realized you’re too beautiful for words" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Moni in her natural, irresistible glow"><img src="img7.jpg" alt="Moni in her natural, irresistible glow" loading="lazy"></div>
+    <div class="gallery-item" data-caption="That soft smile I never get tired of"><img src="img8.jpg" alt="That soft smile I never get tired of" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your eyes here… unfairly perfect"><img src="img9.jpg" alt="Your eyes here… unfairly perfect" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like the peace I always needed"><img src="img10.jpg" alt="You look like the peace I always needed" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Every version of you is beautiful"><img src="img11.jpg" alt="Every version of you is beautiful" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The kind of beauty that feels like home"><img src="img12.jpg" alt="The kind of beauty that feels like home" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your happiness here makes me happy too"><img src="img13.jpg" alt="Your happiness here makes me happy too" loading="lazy"></div>
+    <div class="gallery-item" data-caption="I swear your smile can heal anything"><img src="img14.jpg" alt="I swear your smile can heal anything" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your heart shows in every picture"><img src="img15.jpg" alt="Your heart shows in every picture" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Moni, you’re poetry without trying"><img src="img16.jpg" alt="Moni, you’re poetry without trying" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The softness in your eyes is my comfort"><img src="img17.jpg" alt="The softness in your eyes is my comfort" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like the wish I whispered quietly"><img src="img18.jpg" alt="You look like the wish I whispered quietly" loading="lazy"></div>
+    <div class="gallery-item" data-caption="How do you make every picture feel warm?"><img src="img19.jpg" alt="How do you make every picture feel warm?" loading="lazy"></div>
+    <div class="gallery-item" data-caption="A moment I never want to forget"><img src="img20.jpg" alt="A moment I never want to forget" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your presence makes everything better"><img src="img21.jpg" alt="Your presence makes everything better" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The prettiest girl in the room. Always."><img src="img22.jpg" alt="The prettiest girl in the room. Always." loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like a calm I didn’t know I needed"><img src="img23.jpg" alt="You look like a calm I didn’t know I needed" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The way you carry emotion… beautiful"><img src="img24.jpg" alt="The way you carry emotion… beautiful" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your smile here feels like home"><img src="img25.jpg" alt="Your smile here feels like home" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This picture is pure Moni—soft and lovely"><img src="img26.jpg" alt="This picture is pure Moni—soft and lovely" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your innocence shines here"><img src="img27.jpg" alt="Your innocence shines here" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Jealous Moni is cute, but this Moni is adorable too"><img src="img28.jpg" alt="Jealous Moni is cute, but this Moni is adorable too" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look angelic here"><img src="img29.jpg" alt="You look angelic here" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My heart reacts every time I see this"><img src="img30.jpg" alt="My heart reacts every time I see this" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You make the world prettier without trying"><img src="img31.jpg" alt="You make the world prettier without trying" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your simplicity is the most attractive thing"><img src="img32.jpg" alt="Your simplicity is the most attractive thing" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This is the Moni I would choose every time"><img src="img33.jpg" alt="This is the Moni I would choose every time" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your warmth is visible even here"><img src="img34.jpg" alt="Your warmth is visible even here" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Moni being unintentionally breathtaking"><img src="img35.jpg" alt="Moni being unintentionally breathtaking" loading="lazy"></div>
+    <div class="gallery-item" data-caption="A tiny moment, a huge feeling"><img src="img36.jpg" alt="A tiny moment, a huge feeling" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You don’t pose; you glow"><img src="img37.jpg" alt="You don’t pose; you glow" loading="lazy"></div>
+    <div class="gallery-item" data-caption="One picture, a thousand feelings"><img src="img38.jpg" alt="One picture, a thousand feelings" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The Moni who melts my anger"><img src="img39.jpg" alt="The Moni who melts my anger" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This look… I remember the feeling it gave me"><img src="img40.jpg" alt="This look… I remember the feeling it gave me" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Pretty is too small a word for you"><img src="img41.jpg" alt="Pretty is too small a word for you" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your softness is a superpower"><img src="img42.jpg" alt="Your softness is a superpower" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Even your silence speaks beautifully"><img src="img43.jpg" alt="Even your silence speaks beautifully" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like comfort in human form"><img src="img44.jpg" alt="You look like comfort in human form" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This smile deserves a museum wall"><img src="img45.jpg" alt="This smile deserves a museum wall" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My emotional, adorable Moni ❤️"><img src="img46.jpg" alt="My emotional, adorable Moni ❤️" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like someone my heart cannot let go"><img src="img47.jpg" alt="You look like someone my heart cannot let go" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Every small detail of you is lovable"><img src="img48.jpg" alt="Every small detail of you is lovable" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This Moni = heart stolen again"><img src="img49.jpg" alt="This Moni = heart stolen again" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your long pretty hair makes this perfect"><img src="img50.jpg" alt="Your long pretty hair makes this perfect" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your eyes shine differently here"><img src="img51.jpg" alt="Your eyes shine differently here" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This picture feels like a hug"><img src="img52.jpg" alt="This picture feels like a hug" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You in your natural beauty — my favorite"><img src="img53.jpg" alt="You in your natural beauty — my favorite" loading="lazy"></div>
+    <div class="gallery-item" data-caption="If love had a face, it would look like this"><img src="img54.jpg" alt="If love had a face, it would look like this" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look priceless here"><img src="img55.jpg" alt="You look priceless here" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This is the Moni who makes my heartbeat skip"><img src="img56.jpg" alt="This is the Moni who makes my heartbeat skip" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You glow in ways you don’t realize"><img src="img57.jpg" alt="You glow in ways you don’t realize" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My forever favorite person"><img src="img58.jpg" alt="My forever favorite person" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your presence changes the whole frame"><img src="img59.jpg" alt="Your presence changes the whole frame" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Every angle of you is beautiful"><img src="img60.jpg" alt="Every angle of you is beautiful" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This picture feels like a soft memory"><img src="img61.jpg" alt="This picture feels like a soft memory" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You look like the calm after a storm"><img src="img62.jpg" alt="You look like the calm after a storm" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My heart feels safe looking at this"><img src="img63.jpg" alt="My heart feels safe looking at this" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your smile could fix any bad day"><img src="img64.jpg" alt="Your smile could fix any bad day" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This Moni is my weakness"><img src="img65.jpg" alt="This Moni is my weakness" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Your beauty here is so gentle"><img src="img66.jpg" alt="Your beauty here is so gentle" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The Moni I want in every version of my life"><img src="img67.jpg" alt="The Moni I want in every version of my life" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You’re the prettiest part of my days"><img src="img68.jpg" alt="You’re the prettiest part of my days" loading="lazy"></div>
+    <div class="gallery-item" data-caption="This picture holds a whole emotion"><img src="img69.jpg" alt="This picture holds a whole emotion" loading="lazy"></div>
+    <div class="gallery-item" data-caption="I love this moment more than you know"><img src="img70.jpg" alt="I love this moment more than you know" loading="lazy"></div>
+    <div class="gallery-item" data-caption="Moni, you’re the reason the word 'beautiful' exists"><img src="img71.jpg" alt="Moni, you’re the reason the word 'beautiful' exists" loading="lazy"></div>
+    <div class="gallery-item" data-caption="My heart chose you here all over again"><img src="img72.jpg" alt="My heart chose you here all over again" loading="lazy"></div>
+    <div class="gallery-item" data-caption="The girl I want in every universe ❤️"><img src="img73.jpg" alt="The girl I want in every universe ❤️" loading="lazy"></div>
+    <div class="gallery-item" data-caption="You are my forever and always"><img src="img74.jpg" alt="You are my forever and always" loading="lazy"></div>
+  </div>
 
-  <a class="letter-btn" href="letter.html">Open Letter Bu 💌</a>
+  <a class="letter-btn" href="letter.html">Open Letter 💌</a>
 
   <!-- Lightbox markup -->
   <div class="lb-backdrop" id="lightbox" aria-hidden="true">
@@ -38,216 +158,191 @@
     <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   </div>
 
-  <!-- Gallery builder + lightbox script -->
+  <!-- Lightbox & gallery JS (works with the static gallery-items above) -->
   <script>
-  /* --------- Captions (74 romantic captions) --------- */
-  const captions = [
-    "The smile that made my heart choose you ❤️",
-    "Your eyes here… impossible to forget",
-    "My pretty girl looking like magic",
-    "This day, my heart fell a little deeper",
-    "Your laughter is my favorite sound",
-    "The moment I realized you’re too beautiful for words",
-    "Moni in her natural, irresistible glow",
-    "That soft smile I never get tired of",
-    "Your eyes here… unfairly perfect",
-    "You look like the peace I always needed",
-    "Every version of you is beautiful",
-    "The kind of beauty that feels like home",
-    "Your happiness here makes me happy too",
-    "I swear your smile can heal anything",
-    "Your heart shows in every picture",
-    "Moni, you’re poetry without trying",
-    "The softness in your eyes is my comfort",
-    "You look like the wish I whispered quietly",
-    "How do you make every picture feel warm?",
-    "A moment I never want to forget",
-    "Your presence makes everything better",
-    "The prettiest girl in the room. Always.",
-    "You look like a calm I didn’t know I needed",
-    "The way you carry emotion… beautiful",
-    "Your smile here feels like home",
-    "This picture is pure Moni—soft and lovely",
-    "Your innocence shines here",
-    "Jealous Moni is cute, but this Moni is adorable too",
-    "You look angelic here",
-    "My heart reacts every time I see this",
-    "You make the world prettier without trying",
-    "Your simplicity is the most attractive thing",
-    "This is the Moni I would choose every time",
-    "Your warmth is visible even here",
-    "Moni being unintentionally breathtaking",
-    "A tiny moment, a huge feeling",
-    "You don’t pose; you glow",
-    "One picture, a thousand feelings",
-    "The Moni who melts my anger",
-    "This look… I remember the feeling it gave me",
-    "Pretty is too small a word for you",
-    "Your softness is a superpower",
-    "Even your silence speaks beautifully",
-    "You look like comfort in human form",
-    "This smile deserves a museum wall",
-    "My emotional, adorable Moni ❤️",
-    "You look like someone my heart cannot let go",
-    "Every small detail of you is lovable",
-    "This Moni = heart stolen again",
-    "Your long pretty hair makes this perfect",
-    "Your eyes shine differently here",
-    "This picture feels like a hug",
-    "You in your natural beauty — my favorite",
-    "If love had a face, it would look like this",
-    "You look priceless here",
-    "This is the Moni who makes my heartbeat skip",
-    "You glow in ways you don’t realize",
-    "My forever favorite person",
-    "Your presence changes the whole frame",
-    "Every angle of you is beautiful",
-    "This picture feels like a soft memory",
-    "You look like the calm after a storm",
-    "My heart feels safe looking at this",
-    "Your smile could fix any bad day",
-    "This Moni is my weakness",
-    "Your beauty here is so gentle",
-    "The Moni I want in every version of my life",
-    "You’re the prettiest part of my days",
-    "This picture holds a whole emotion",
-    "I love this moment more than you know",
-    "Moni, you’re the reason the word 'beautiful' exists",
-    "My heart chose you here all over again",
-    "The girl I want in every universe ❤️"
-  ];
+    const IMAGE_COUNT = 74;
+    const captions = [
+      "The smile that made my heart choose you ❤️",
+      "Your eyes here… impossible to forget",
+      "My pretty girl looking like magic",
+      "This day, my heart fell a little deeper",
+      "Your laughter is my favorite sound",
+      "The moment I realized you’re too beautiful for words",
+      "Moni in her natural, irresistible glow",
+      "That soft smile I never get tired of",
+      "Your eyes here… unfairly perfect",
+      "You look like the peace I always needed",
+      "Every version of you is beautiful",
+      "The kind of beauty that feels like home",
+      "Your happiness here makes me happy too",
+      "I swear your smile can heal anything",
+      "Your heart shows in every picture",
+      "Moni, you’re poetry without trying",
+      "The softness in your eyes is my comfort",
+      "You look like the wish I whispered quietly",
+      "How do you make every picture feel warm?",
+      "A moment I never want to forget",
+      "Your presence makes everything better",
+      "The prettiest girl in the room. Always.",
+      "You look like a calm I didn’t know I needed",
+      "The way you carry emotion… beautiful",
+      "Your smile here feels like home",
+      "This picture is pure Moni—soft and lovely",
+      "Your innocence shines here",
+      "Jealous Moni is cute, but this Moni is adorable too",
+      "You look angelic here",
+      "My heart reacts every time I see this",
+      "You make the world prettier without trying",
+      "Your simplicity is the most attractive thing",
+      "This is the Moni I would choose every time",
+      "Your warmth is visible even here",
+      "Moni being unintentionally breathtaking",
+      "A tiny moment, a huge feeling",
+      "You don’t pose; you glow",
+      "One picture, a thousand feelings",
+      "The Moni who melts my anger",
+      "This look… I remember the feeling it gave me",
+      "Pretty is too small a word for you",
+      "Your softness is a superpower",
+      "Even your silence speaks beautifully",
+      "You look like comfort in human form",
+      "This smile deserves a museum wall",
+      "My emotional, adorable Moni ❤️",
+      "You look like someone my heart cannot let go",
+      "Every small detail of you is lovable",
+      "This Moni = heart stolen again",
+      "Your long pretty hair makes this perfect",
+      "Your eyes shine differently here",
+      "This picture feels like a hug",
+      "You in your natural beauty — my favorite",
+      "If love had a face, it would look like this",
+      "You look priceless here",
+      "This is the Moni who makes my heartbeat skip",
+      "You glow in ways you don’t realize",
+      "My forever favorite person",
+      "Your presence changes the whole frame",
+      "Every angle of you is beautiful",
+      "This picture feels like a soft memory",
+      "You look like the calm after a storm",
+      "My heart feels safe looking at this",
+      "Your smile could fix any bad day",
+      "This Moni is my weakness",
+      "Your beauty here is so gentle",
+      "The Moni I want in every version of my life",
+      "You’re the prettiest part of my days",
+      "This picture holds a whole emotion",
+      "I love this moment more than you know",
+      "Moni, you’re the reason the word 'beautiful' exists",
+      "My heart chose you here all over again",
+      "The girl I want in every universe ❤️",
+      "You are my forever and always"
+    ];
 
-  const IMAGE_COUNT = 74;
-  const gallery = document.getElementById('gallery');
+    // Build clickable behavior: add click listeners to gallery-item elements
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach((el, idx) => {
+      el.addEventListener('click', () => openLightbox(idx));
+    });
 
-  function buildGallery() {
-    if (!gallery) return;
-    gallery.innerHTML = '';
-    for (let i = 1; i <= IMAGE_COUNT; i++) {
-      const cap = captions[i-1] || `Memory ${i}`;
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
-      item.setAttribute('data-caption', cap);
+    /* ---------- Lightbox logic ---------- */
+    const lightbox = document.getElementById('lightbox');
+    const lbImage = document.getElementById('lbImage');
+    const lbCaption = document.getElementById('lbCaption');
+    const lbCounter = document.getElementById('lbCounter');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const slideshowBtn = document.getElementById('slideshowBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const lbClose = document.getElementById('lbClose');
+    const closeMetaBtn = document.getElementById('closeMetaBtn');
 
-      const img = document.createElement('img');
-      img.src = `img${i}.jpg`;
-      img.alt = cap;
-      img.loading = 'lazy';
-      // open lightbox on click
-      item.addEventListener('click', ()=> openLightbox(i-1));
-      item.appendChild(img);
-      gallery.appendChild(item);
+    let currentIndex = 0;
+    let slideshowInterval = null;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      updateLightbox();
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
     }
-  }
 
-  /* ---------- Lightbox logic ---------- */
-  const lightbox = document.getElementById('lightbox');
-  const lbImage = document.getElementById('lbImage');
-  const lbCaption = document.getElementById('lbCaption');
-  const lbCounter = document.getElementById('lbCounter');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const slideshowBtn = document.getElementById('slideshowBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const lbClose = document.getElementById('lbClose');
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+      stopSlideshow();
+      document.body.style.overflow = '';
+    }
 
-  let currentIndex = 0;
-  let slideshowInterval = null;
+    function updateLightbox() {
+      const idx = ((currentIndex % IMAGE_COUNT) + IMAGE_COUNT) % IMAGE_COUNT;
+      const src = `img${idx+1}.jpg`;
+      const caption = captions[idx] || `Memory ${idx+1}`;
+      lbImage.src = src;
+      lbImage.alt = caption;
+      lbCaption.textContent = caption;
+      lbCounter.textContent = `${idx+1} / ${IMAGE_COUNT}`;
+      downloadBtn.onclick = () => downloadImage(src);
+    }
 
-  function openLightbox(index) {
-    currentIndex = index;
-    updateLightbox();
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden','false');
-    // prevent background scroll
-    document.body.style.overflow = 'hidden';
-  }
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + IMAGE_COUNT) % IMAGE_COUNT;
+      updateLightbox();
+    }
 
-  function closeLightbox() {
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden','true');
-    stopSlideshow();
-    document.body.style.overflow = '';
-  }
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % IMAGE_COUNT;
+      updateLightbox();
+    }
 
-  function updateLightbox() {
-    const idx = ((currentIndex % IMAGE_COUNT) + IMAGE_COUNT) % IMAGE_COUNT;
-    const src = `img${idx+1}.jpg`;
-    const caption = captions[idx] || `Memory ${idx+1}`;
-    lbImage.src = src;
-    lbImage.alt = caption;
-    lbCaption.textContent = caption;
-    lbCounter.textContent = `${idx+1} / ${IMAGE_COUNT}`;
-    downloadBtn.onclick = () => downloadImage(src);
-  }
+    function downloadImage(src){
+      const a = document.createElement('a');
+      a.href = src;
+      a.download = src;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
 
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + IMAGE_COUNT) % IMAGE_COUNT;
-    updateLightbox();
-  }
+    function startSlideshow(){
+      slideshowBtn.textContent = 'Stop Slideshow';
+      slideshowInterval = setInterval(()=> nextImage(), 3000);
+    }
+    function stopSlideshow(){
+      slideshowBtn.textContent = 'Start Slideshow';
+      if (slideshowInterval) { clearInterval(slideshowInterval); slideshowInterval = null; }
+    }
 
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % IMAGE_COUNT;
-    updateLightbox();
-  }
+    // keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'Escape') closeLightbox();
+    });
 
-  function downloadImage(src){
-    const a = document.createElement('a');
-    a.href = src;
-    a.download = src;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
+    prevBtn.addEventListener('click', prevImage);
+    nextBtn.addEventListener('click', nextImage);
+    lbClose.addEventListener('click', closeLightbox);
+    closeMetaBtn.addEventListener('click', closeLightbox);
+    slideshowBtn.addEventListener('click', () => {
+      if (slideshowInterval) stopSlideshow(); else startSlideshow();
+    });
 
-  /* slideshow controls */
-  function startSlideshow(){
-    slideshowBtn.textContent = 'Stop Slideshow';
-    slideshowInterval = setInterval(()=> nextImage(), 3000);
-  }
-  function stopSlideshow(){
-    slideshowBtn.textContent = 'Start Slideshow';
-    if (slideshowInterval) { clearInterval(slideshowInterval); slideshowInterval = null; }
-  }
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
 
-  /* keyboard */
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'ArrowLeft') prevImage();
-    if (e.key === 'ArrowRight') nextImage();
-    if (e.key === 'Escape') closeLightbox();
-  });
-
-  /* clicks */
-  prevBtn.addEventListener('click', prevImage);
-  nextBtn.addEventListener('click', nextImage);
-  lbClose.addEventListener('click', closeLightbox);
-  document.getElementById('closeMetaBtn').addEventListener('click', closeLightbox);
-  slideshowBtn.addEventListener('click', () => {
-    if (slideshowInterval) stopSlideshow(); else startSlideshow();
-  });
-
-  /* backdrop click close */
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-
-  /* touch swipe */
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const lbImgEl = document.getElementById('lbImage');
-  lbImgEl.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
-  lbImgEl.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchEndX - touchStartX > 50) prevImage();
-    if (touchStartX - touchEndX > 50) nextImage();
-  });
-
-  /* init */
-  document.addEventListener('DOMContentLoaded', () => {
-    buildGallery();
-  });
-
+    // touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lbImgEl = document.getElementById('lbImage');
+    lbImgEl.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
+    lbImgEl.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX - touchStartX > 50) prevImage();
+      if (touchStartX - touchEndX > 50) nextImage();
+    });
   </script>
 
   <!-- keep your main script included (cache-busted so updates load) -->
