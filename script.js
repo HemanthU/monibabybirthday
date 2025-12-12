@@ -9,7 +9,8 @@ function checkName() {
 }
 
 // Typewriter Effect
-let message = "Moni, before anything else, I want to tell you this: on this earth full of billions of people, there is no one — absolutely no one — who makes my heart behave the way you do. There is no voice that softens my world like yours, no presence that steadies my soul like yours, no emotion that feels as real and as alive as the ones you bring out of me. Today is your birthday, but the truth is… every single day feels like a celebration because your existence touches mine in ways I can barely explain. If I could open my chest and let you see what your name does inside me, you would understand that you are not just someone I love — you are the pulse behind every feeling I am learning to understand. You are the softness in my anger, the warmth in my fear, the calm in my storms, the reason I try, the reason I hope, the reason my life feels less like survival and more like something I finally want to live.
+// long letter (use a template literal so newlines/quotes work without escaping)
+let message = `Moni, before anything else, I want to tell you this: on this earth full of billions of people, there is no one — absolutely no one — who makes my heart behave the way you do. There is no voice that softens my world like yours, no presence that steadies my soul like yours, no emotion that feels as real and as alive as the ones you bring out of me. Today is your birthday, but the truth is… every single day feels like a celebration because your existence touches mine in ways I can barely explain. If I could open my chest and let you see what your name does inside me, you would understand that you are not just someone I love — you are the pulse behind every feeling I am learning to understand. You are the softness in my anger, the warmth in my fear, the calm in my storms, the reason I try, the reason I hope, the reason my life feels less like survival and more like something I finally want to live.
 
 Sometimes I look at you — not just at your face or your eyes, but at your presence — and I genuinely wonder how a person can be so gentle and so powerful at the same time. How someone can make me laugh like a child, silence me like a prayer, and shake me like a truth I wasn’t ready to learn. You are not simple, Moni. You are poetry with depth. You are emotion with layers. You are a story unfolding line by line, and every time I think I’ve understood you, you show me another part of you that makes me fall all over again. You carry love in the way you speak, in the way you get angry, in the way you cry, in the way you care, in the way you retreat when overwhelmed, in the way you come close again even when scared. Every emotion you feel is something genuine, something raw, something pure — and that purity is what makes you the rarest person I’ve ever known.
 
@@ -49,8 +50,7 @@ In every version of me.
 Today and every day after.
 
 Happy Birthday, my Moni. ❤️
-You are my heart’s favorite place.";
-
+You are my heart’s favorite place.`;
 let i = 0;
 function startTyping() {
     if (i < message.length) {
