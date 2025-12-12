@@ -10,13 +10,12 @@ function checkName() {
   const input = document.getElementById("nameInput");
   if (!input) return;
   const name = input.value.trim().toLowerCase();
-  if (name === "moni" && name === "hemu") {
+  if (name.includes("moni") && name.includes("hemu")) {
     window.location.href = "photos.html";
-  } else {
-    const msg = document.getElementById("msg");
-    if (msg) msg.textContent = "This surprise is only for Moni ❤️";
+} else {
+    document.getElementById("msg").textContent = "This surprise is only for Moni ❤️";
+     document.getElementById("msg").textContent = "Close the page";
   }
-}
 
 /* ---------- The birthday message (template literal) ---------- */
 let message = `Moni… today is your birthday, and I want to speak to you in the softest and most honest way I can — not as the world sees you, but as I see you. As the girl who came into my life quietly, but somehow filled every empty corner without even trying.
