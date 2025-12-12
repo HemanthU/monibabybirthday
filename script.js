@@ -43,7 +43,11 @@ I love the way your heart reacts around me. I love your honesty with your feelin
 
 Thank you for being the soft place and the storm, the laughter and the quiet, my comfort and my wild. Thank you for staying, for trusting, for sharing pieces of yourself with me that are fragile and true. On your birthday I celebrate you — every part of who you are and everything you will become.
 
-Moni… you are my pretty girl, my calm, my happiness, my safe place. I don’t know every chapter ahead, but I know this: in every version of my life, I want you there. Happy Birthday, Monisha. You are my heart’s favorite place, today and always.
+Moni… you are my pretty girl, my calm, my happiness, my safe place. I don’t know every chapter ahead, but I know this: in every version of my life, I want you there. 
+
+Happy Birthday, Moni🩷💞💕. 
+
+You are my heart’s favorite place, today and always.
 
 — Your Hemu`;
 
