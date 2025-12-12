@@ -344,7 +344,14 @@
       if (touchStartX - touchEndX > 50) nextImage();
     });
   </script>
-
+<script>
+document.querySelectorAll('.gallery-item').forEach(item => {
+  item.classList.add('visible');
+});
+document.querySelectorAll('.gallery-item img').forEach(img => {
+  img.classList.add('loaded');
+});
+</script>
   <!-- keep your main script included (cache-busted so updates load) -->
   <script src="script.js?v=4"></script>
 </body>
