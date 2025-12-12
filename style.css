@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #fff7fb;
+    text-align: center;
+}
+
+/* Center Box */
+.center-box {
+    margin-top: 150px;
+}
+
+input {
+    padding: 10px;
+    width: 250px;
+    border: 1px solid #f4b6c2;
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #ff8ca8;
+    color: white;
+    cursor: pointer;
+}
+
+.title {
+    margin-top: 30px;
+}
+
+/* Gallery */
+.gallery {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.gallery img {
+    width: 220px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.letter-btn {
+    display: block;
+    margin: 40px auto;
+    width: 200px;
+    padding: 12px;
+    background: #ff8ca8;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* Letter Box */
+.letter-box {
+    margin: 100px auto;
+    max-width: 600px;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    z-index: 2;
+    position: relative;
+}
+
+/* Initials Background */
+.initial {
+  position: fixed;
+  font-size: 80px;
+  font-weight: 600;
+  color: rgba(255, 100, 130, 0.10);
+  z-index: 0;
+  animation: floatInitials 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes floatInitials {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-40px); }
+  100% { transform: translateY(0px); }
+}
