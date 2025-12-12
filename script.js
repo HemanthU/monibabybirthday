@@ -10,7 +10,7 @@ function checkName() {
   const input = document.getElementById("nameInput");
   if (!input) return;
   const name = input.value.trim().toLowerCase();
-  if (name === "moni" || name === "monisha") {
+  if (name === "moni" && name === "hemu") {
     window.location.href = "photos.html";
   } else {
     const msg = document.getElementById("msg");
