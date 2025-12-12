@@ -1,8 +1,9 @@
-/* script.js
-   - checkName(): used on index.html to allow only "Moni" (case-insensitive)
-   - Typewriter: startTyping() writes the long message into element with id="typeText"
+/* script.js - complete working version
+   - checkName(): allow only if BOTH 'moni' and 'hemu' appear in input
+   - Typewriter: startTyping() writes the message into element with id="typeText"
    - playMusic(): tries to autoplay music, falls back to user interaction
    - toggleMusic(): play/pause control for a music button
+   - reveal(): example function to call from your "Reveal" button on letter page
 */
 
 /* ---------- Name check (index.html) ---------- */
@@ -10,12 +11,22 @@ function checkName() {
   const input = document.getElementById("nameInput");
   if (!input) return;
   const name = input.value.trim().toLowerCase();
+
+  const msgEl = document.getElementById("msg");
+  // require both names to be present
   if (name.includes("moni") && name.includes("hemu")) {
+    // success — redirect to gallery / photos page
     window.location.href = "photos.html";
-} else {
-    document.getElementById("msg").textContent = "This surprise is only for Moni ❤️";
-     document.getElementById("msg").textContent = "Close the page";
+  } else {
+    // failure message (single message)
+    if (msgEl) msgEl.textContent = "This surprise is only for Moni ❤️ — try again or close the page.";
+    // optionally, you could add a shake animation to the input here
+    if (input) {
+      input.classList.add("input-error");
+      setTimeout(()=> input.classList.remove("input-error"), 600);
+    }
   }
+}
 
 /* ---------- The birthday message (template literal) ---------- */
 let message = `Moni… today is your birthday, and I want to speak to you in the softest and most honest way I can — not as the world sees you, but as I see you. As the girl who came into my life quietly, but somehow filled every empty corner without even trying.
@@ -38,7 +49,7 @@ Moni… you are my pretty girl, my calm, my happiness, my safe place. I don’t 
 
 /* ---------- Typewriter logic ---------- */
 let typeIndex = 0;
-// Delay in ms per character. ~65ms gives ~4 minutes for ~600 words (adjust if needed)
+// Delay in ms per character. ~65ms gives ~4 minutes for ~600 words (tune as needed)
 const TYPING_DELAY_MS = 65;
 
 function startTyping() {
@@ -47,6 +58,7 @@ function startTyping() {
   // Reset if called again
   out.innerHTML = "";
   typeIndex = 0;
+  // start
   typeChar();
 }
 
@@ -59,18 +71,22 @@ function typeChar() {
     if (ch === '\n') {
       out.innerHTML += '<br>';
     } else {
-      // Add the character
-      out.innerHTML += ch;
+      // Escape HTML-angle-brackets just in case (very basic)
+      if (ch === '<') out.innerHTML += '&lt;';
+      else if (ch === '>') out.innerHTML += '&gt;';
+      else out.innerHTML += ch;
     }
     typeIndex++;
     setTimeout(typeChar, TYPING_DELAY_MS);
   } else {
-    // finished typing - optionally you could trigger a small celebration animation here
+    // finished typing - you may add a small flourish here
+    // e.g., show a small heart or enable a download/share button
   }
 }
 
 /* ---------- Music control ---------- */
 const musicId = "bgMusic"; // id of <audio> element in your letter.html
+
 function playMusic() {
   const music = document.getElementById(musicId);
   if (!music) return;
@@ -103,33 +119,47 @@ function toggleMusic(btnId) {
   }
 }
 
+/* ---------- Reveal helper (call from your Reveal button) ---------- */
+/* 
+   If your letter page has a "Reveal Letter" button that calls reveal(),
+   this function will hide the cover, show the content, start typing and play music.
+*/
+function reveal() {
+  const cover = document.getElementById("cover");
+  const content = document.getElementById("content");
+  if (cover) {
+    cover.style.opacity = "0";
+    setTimeout(()=> {
+      if (cover) cover.style.display = "none";
+      if (content) {
+        content.style.display = "block";
+        // start typing and music after content is visible
+        startTyping();
+        playMusic();
+      }
+    }, 700);
+  } else {
+    // fallback: if no cover, just start
+    if (content) content.style.display = "block";
+    startTyping();
+    playMusic();
+  }
+}
+
 /* ---------- Auto-run helpers for letter page ---------- */
 /* 
-   If you want typing and music to start only after a reveal button,
-   call startTyping() and playMusic() from your reveal() function.
-   If you want them to start immediately when letter.html loads,
-   uncomment the block below.
+   We don't auto-start typing/music on load to avoid autoplay blocks.
+   Use reveal() (recommended) or uncomment startTyping/playMusic below for immediate start.
 */
 
-// Example: start automatically when on letter page
-if (document.readyState === "complete" || document.readyState === "interactive") {
-  // detect if we are on letter page by checking the presence of the typeText element
-  if (document.getElementById("typeText")) {
-    // Don't auto-start to avoid autoplay blocks — call playMusic() and startTyping()
-    // from your reveal button handler instead. But if you want immediate start:
-    // startTyping();
-    // playMusic();
-  }
-} else {
-  document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById("typeText")) {
-      // startTyping(); playMusic(); // comment/uncomment depending on desired behavior
-    }
-  });
-}
+// Example: if you want to auto-start when typeText exists (not recommended on mobile)
+document.addEventListener("DOMContentLoaded", () => {
+  // leaving empty intentionally
+});
 
 /* ---------- Export functions to window so HTML onclicks can use them ---------- */
 window.checkName = checkName;
 window.startTyping = startTyping;
 window.playMusic = playMusic;
 window.toggleMusic = toggleMusic;
+window.reveal = reveal;
