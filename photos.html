@@ -5,51 +5,6 @@
   <title>Memories ❤️</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Minimal gallery + lightbox CSS (works even if you haven't edited style.css) */
-    .title { text-align:center; margin:18px 0; font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 18px; max-width:1200px; margin: 0 auto; }
-    .gallery-item { position: relative; overflow: hidden; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); background:#fafafa; cursor:pointer; transition: transform .22s ease, box-shadow .22s ease; }
-    .gallery-item img { width:100%; height:100%; object-fit:cover; aspect-ratio:4/5; display:block; transition: transform .35s ease, filter .35s ease; }
-    .gallery-item:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(0,0,0,0.12); }
-    .gallery-item:hover img { transform: scale(1.06); filter: saturate(1.06); }
-
-    /* caption overlay using data-caption */
-    .gallery-item::after {
-      content: attr(data-caption);
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      padding: 10px 12px;
-      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.62) 100%);
-      color: #fff;
-      font-size: 14px;
-      opacity: 0; transform: translateY(10px);
-      transition: opacity .22s ease, transform .22s ease;
-      pointer-events: none;
-    }
-    .gallery-item:hover::after { opacity: 1; transform: translateY(0); }
-
-    .letter-btn { display:block; width:max-content; margin:22px auto; padding:10px 16px; background:#ff6b81; color:#fff; text-decoration:none; border-radius:10px; box-shadow:0 6px 18px rgba(255,107,129,0.18); }
-
-    /* Lightbox */
-    .lb-backdrop { position:fixed; inset:0; background: rgba(0,0,0,0.78); display:none; align-items:center; justify-content:center; z-index:9999; padding:20px; }
-    .lb-backdrop.open { display:flex; }
-    .lb { width:100%; max-width:1100px; max-height:90vh; display:grid; grid-template-columns: 1fr 320px; gap:16px; align-items:start; }
-    .lb-image { background:#000; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-    .lb-image img { max-width:100%; max-height:90vh; object-fit:contain; display:block; }
-    .lb-meta { background:#fff; padding:14px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.08); color:#222; max-height:86vh; overflow:auto; }
-    .lb-controls { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-    .lb-btn { padding:8px 12px; border-radius:10px; background:#111; color:#fff; border:none; cursor:pointer; }
-    .lb-caption { font-size:15px; line-height:1.45; color:#222; margin-bottom:10px; }
-    .lb-counter { font-size:13px; color:#666; }
-    .lb-close { position:absolute; right:20px; top:18px; background:transparent; color:#fff; border:none; font-size:22px; cursor:pointer; }
-
-    .nav-arrow { position:fixed; top:50%; transform:translateY(-50%); font-size:36px; color:#fff; background:rgba(0,0,0,0.25); width:48px; height:48px; border-radius:50%; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10001; }
-    .nav-prev { left:18px; }
-    .nav-next { right:18px; }
-
-    @media (max-width:900px) { .lb { grid-template-columns: 1fr; } .lb-meta { order:2; max-height:30vh; } .lb-image { order:1; } }
-  </style>
 </head>
 <body>
 
@@ -58,7 +13,7 @@
   <!-- gallery will be built here -->
   <div class="gallery" id="gallery" aria-live="polite"></div>
 
-  <a class="letter-btn" href="letter.html">Open Letter 💌</a>
+  <a class="letter-btn" href="letter.html">Open Letter Bu 💌</a>
 
   <!-- Lightbox markup -->
   <div class="lb-backdrop" id="lightbox" aria-hidden="true">
